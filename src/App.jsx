@@ -54,7 +54,7 @@ function App() {
           
       {screen === gamemode[2] && gameHealth.hearts > 0 && (
         <Level2 
-          advance={() => setScreen(gamemode[3])}
+          aadvnce={() => setScreen(gamemode[3])}
           gameHealth={gameHealth} // ← Pass modified hook data to Level2 from level1
         />
       )}
