@@ -1,4 +1,4 @@
-// Level1
+// Level1.jsx
 import { level1data, questions, ansresult } from "../data/gamedata";
 import { useState } from "react";
 
@@ -6,42 +6,37 @@ function Level1({ advance, gameHealth }) {
   const [answerstate, setAnswerState] = useState(ansresult[0]);
   const [selectedButton, setSelectedButton] = useState(null);
   const [buttonColors, setButtonColors] = useState({});
-  const [isAnswered, setIsAnswered] = useState(false); // New state to track if answered
+  const [isAnswered, setIsAnswered] = useState(false);
   
   const handleAnswerClick = (result, buttonId) => {
-    // Prevent multiple clicks if already answered
     if (isAnswered) return;
     
     setIsAnswered(true);
     setAnswerState(result);
     setSelectedButton(buttonId);
     
-    // Set button colors based on answer type
     const newColors = {};
     
-    // Set color for the clicked button
+    // Set CSS class names instead of inline colors
     if (result === ansresult[1]) { // Correct
-      newColors[buttonId] = "green";
+      newColors[buttonId] = "correct";
     } 
     else if (result === ansresult[2]) { // Close call
-      newColors[buttonId] = "orange";
+      newColors[buttonId] = "close-call";
     }
     else if (result === ansresult[3]) { // Wrong
-      newColors[buttonId] = "red";
+      newColors[buttonId] = "wrong";
     }
     
     setButtonColors(newColors);
     
-    // Apply heart effects HERE
     if (result === ansresult[1]) {
       // Correct - do nothing
     } 
     else if (result === ansresult[2]) {
-      // Close call - lose 1 heart
       gameHealth.loseOneHeart();
     }
     else if (result === ansresult[3]) {
-      // Wrong - lose all hearts
       gameHealth.loseAllHearts();
     }
   };
@@ -52,92 +47,107 @@ function Level1({ advance, gameHealth }) {
       cursor: isAnswered ? "not-allowed" : "pointer",
       opacity: isAnswered ? 0.7 : 1
     };
-    
-    if (buttonColors[buttonId]) {
-      return {
-        ...baseStyle,
-        backgroundColor: buttonColors[buttonId],
-        color: "white",
-        border: `2px solid ${buttonColors[buttonId]}`,
-        transform: "scale(0.98)"
-      };
-    }
     return baseStyle;
   };
 
   return (
-    <div>
-      <h2>{questions.level1}</h2>
-      {/*Ive added those tags so you guys understand the logic better,
-      close calls mean they lose a heart wrong answers mean they lose all the hearts 
-      while correct ones allow procedure*/}
-      <button 
-        onClick={() => handleAnswerClick(ansresult[3], "button1")}
-        style={getButtonStyle("button1")}
-        disabled={isAnswered} // Disable button after answer
-      >
-        {level1data.answer1} (Wrong)
-      </button>
-      <button 
-        onClick={() => handleAnswerClick(ansresult[1], "button2")}
-        style={getButtonStyle("button2")}
-        disabled={isAnswered} // Disable button after answer
-      >
-        {level1data.answer2} (Correct)
-      </button>
-      <button 
-        onClick={() => handleAnswerClick(ansresult[3], "button3")}
-        style={getButtonStyle("button3")}
-        disabled={isAnswered} // Disable button after answer
-      >
-        {level1data.answer3} (Wrong)
-      </button>
-      <button 
-        onClick={() => handleAnswerClick(ansresult[2], "button4")}
-        style={getButtonStyle("button4")}
-        disabled={isAnswered} // Disable button after answer
-      >
-        {level1data.answer4} (Close Call)
-      </button>
+    <div className="game-container" id="level1-screen">
+      <div className="level-indicator" id="level1-indicator">Level 1</div>
       
-      <Result answerstate={answerstate} advance={advance} isAnswered={isAnswered} />
+      <div className="question-container" id="level1-question">
+        <h2 className="question-text" id="level1-question-text">{questions.level1}</h2>
+        <p className="question-hint" id="level1-hint">Choose wisely! Your survival depends on it.</p>
+      </div>
+      
+      <div className="answer-grid" id="level1-answers">
+        <button 
+          onClick={() => handleAnswerClick(ansresult[3], "button1")}
+          className={`answer-button ${buttonColors["button1"] || ""}`}
+          style={getButtonStyle("button1")}
+          disabled={isAnswered}
+          id="level1-option1"
+        >
+          {level1data.answer1}
+        </button>
+        
+        <button 
+          onClick={() => handleAnswerClick(ansresult[1], "button2")}
+          className={`answer-button ${buttonColors["button2"] || ""}`}
+          style={getButtonStyle("button2")}
+          disabled={isAnswered}
+          id="level1-option2"
+        >
+          {level1data.answer2}
+        </button>
+        
+        <button 
+          onClick={() => handleAnswerClick(ansresult[3], "button3")}
+          className={`answer-button ${buttonColors["button3"] || ""}`}
+          style={getButtonStyle("button3")}
+          disabled={isAnswered}
+          id="level1-option3"
+        >
+          {level1data.answer3}
+        </button>
+        
+        <button 
+          onClick={() => handleAnswerClick(ansresult[2], "button4")}
+          className={`answer-button ${buttonColors["button4"] || ""}`}
+          style={getButtonStyle("button4")}
+          disabled={isAnswered}
+          id="level1-option4"
+        >
+          {level1data.answer4}
+        </button>
+      </div>
+      
+      <Result 
+        answerstate={answerstate} 
+        advance={advance} 
+        isAnswered={isAnswered} 
+        gameHealth={gameHealth}
+      />
     </div>
   );
 }
 
-function Result({ answerstate, advance, isAnswered, gameHealth}) {
-  // Only show result if an answer has been selected
+function Result({ answerstate, advance, isAnswered, gameHealth }) {
   if (!isAnswered) return null;
   
-  // NO heart functions here!
   if (answerstate === ansresult[1]) {
     return (
-      <div>
-        <h3>{level1data.outcome1}</h3>
-        <button onClick={advance}>Proceed to Level 2</button>
+      <div className="result-container" id="level1-result-correct">
+        <h3 className="result-title">Good Choice! 🎉</h3>
+        <p className="result-text">{level1data.outcome1}</p>
+        <button className="action-button" onClick={advance} id="level1-proceed-btn">
+          Proceed to Level 2
+        </button>
       </div>
     );
   } else if (answerstate === ansresult[2]) {
     return (
-      <div>
-        <h3>{level1data.outcome2}</h3>
-        <p>⚠️ Lost 1 heart!</p>
-        <button onClick={advance}>Proceed to Level 2</button>
+      <div className="result-container" id="level1-result-close">
+        <h3 className="result-title">Close Call! ⚠️</h3>
+        <p className="result-text">{level1data.outcome2}</p>
+        <p className="heart-loss-warning">Lost 1 heart!</p>
+        <button className="action-button" onClick={advance} id="level1-continue-btn">
+          Continue to Level 2
+        </button>
       </div>
     );
   } else if (answerstate === ansresult[3]) {
-    console.log("reached")
     return (
-      <div>
-        <h3>{level1data.outcome3}</h3>
-        <p>💀 Lost all hearts!</p>
-        <button onClick={() => {
-            {gameHealth.resetGame};
-            setScreen(gamemode[0]);
-            console.log("clicked")
-          }}>
-            Start over
-          </button>
+      <div className="result-container game-over" id="level1-result-wrong">
+        <h3 className="result-title">Game Over! 💀</h3>
+        <p className="result-text">{level1data.outcome3}</p>
+        <p className="heart-loss-warning">Lost all hearts!</p>
+        <button 
+          className="action-button" 
+          onClick={() => window.location.reload()}
+          id="level1-restart-btn"
+        >
+          Start Over
+        </button>
       </div>
     );
   } else {

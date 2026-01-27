@@ -1,3 +1,4 @@
+import './App.css';  // <-- THIS LINE MUST BE AT TOP
 import { useState } from "react";
 import useGameHealth from "./hooks/useGameHealth";
 import Welcome from "./components/Welcome";
@@ -12,7 +13,8 @@ import Level7 from "./components/Level7";
 import Level8 from "./components/Level8";
 import Level9 from "./components/Level9";
 import Level10 from "./components/Level10";
-import MusicPlayer from "./components/MusicPlayer"; // <-- ADD THIS IMPORT
+import MusicPlayer from "./components/MusicPlayer"
+
 
 function App() {
   const [screen, setScreen] = useState(gamemode[0]);

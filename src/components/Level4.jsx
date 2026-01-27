@@ -117,6 +117,13 @@ function Result({ answerstate, advance }) {
         <h3 className="result-title">Too Loud! 💀</h3>
         <p className="result-text">{level4data.outcome1}</p>
         <p style={{ color: '#e74c3c', marginBottom: '1rem' }}>Lost all hearts!</p>
+        <button 
+          className="action-button" 
+          onClick={() => window.location.reload()}
+          id="level3-restart-btn"
+        >
+          Start Over
+        </button>
       </div>
     );
   } else {

@@ -3,29 +3,34 @@ import { useEffect, useRef, useState } from 'react';
 function MusicPlayer() {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [volume, setVolume] = useState(0.3);
 
   useEffect(() => {
-    // Initialize audio with YOUR mp3 file
+    // Initialize audio
     audioRef.current = new Audio('/audio/bg.mp3');
-    audioRef.current.loop = true; // Loops forever
-    audioRef.current.volume = 0.3; // 30% volume
+    audioRef.current.loop = true;
+    audioRef.current.volume = volume;
     
     // Try to play automatically
-    audioRef.current.play()
-      .then(() => setIsPlaying(true))
-      .catch(() => {
-        // Auto-play failed (browser restriction)
-        console.log('Waiting for user interaction to play music');
-      });
+    const tryAutoPlay = async () => {
+      try {
+        await audioRef.current.play();
+        setIsPlaying(true);
+      } catch (error) {
+        console.log('Music will start on user interaction');
+      }
+    };
 
-    // Play when user first interacts
+    tryAutoPlay();
+
+    // Play on user interaction
     const handleInteraction = () => {
       if (audioRef.current && !isPlaying) {
         audioRef.current.play()
           .then(() => setIsPlaying(true))
           .catch(console.error);
         
-        // Remove listeners after successful play
         document.removeEventListener('click', handleInteraction);
         document.removeEventListener('keydown', handleInteraction);
       }
@@ -34,7 +39,7 @@ function MusicPlayer() {
     document.addEventListener('click', handleInteraction);
     document.addEventListener('keydown', handleInteraction);
 
-    // Cleanup on unmount
+    // Cleanup
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
@@ -56,41 +61,75 @@ function MusicPlayer() {
     setIsPlaying(!isPlaying);
   };
 
+  const toggleMute = () => {
+    if (!audioRef.current) return;
+    
+    audioRef.current.muted = !isMuted;
+    setIsMuted(!isMuted);
+  };
+
+  const handleVolumeChange = (e) => {
+    if (!audioRef.current) return;
+    
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
+    audioRef.current.volume = newVolume;
+    
+    // Auto-unmute when adjusting volume
+    if (isMuted && newVolume > 0) {
+      audioRef.current.muted = false;
+      setIsMuted(false);
+    }
+  };
+
   return (
-    <div style={{
-      position: 'fixed',
-      bottom: '20px',
-      right: '20px',
-      zIndex: 1000,
-      background: 'rgba(30, 40, 50, 0.9)',
-      borderRadius: '50px',
-      padding: '10px 15px',
-      border: '1px solid rgba(255, 204, 51, 0.3)',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '10px'
-    }}>
-      <button 
-        onClick={togglePlay}
-        style={{
-          background: 'transparent',
-          border: 'none',
-          color: 'white',
-          fontSize: '1.5rem',
-          cursor: 'pointer',
-          width: '40px',
-          height: '40px',
-          borderRadius: '50%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-      >
-        {isPlaying ? '⏸️' : '▶️'}
-      </button>
-      <span style={{ color: '#a0b3c6', fontSize: '0.9rem' }}>
-        {isPlaying ? 'Music ON' : 'Music OFF'}
-      </span>
+    <div className="music-player-container" id="music-player">
+      <div className="music-player" id="music-controls">
+        <button 
+          className="music-control-btn play-pause-btn"
+          id="play-pause-btn"
+          onClick={togglePlay}
+          aria-label={isPlaying ? "Pause music" : "Play music"}
+        >
+          <span className="music-icon">
+            {isPlaying ? '⏸️' : '▶️'}
+          </span>
+        </button>
+        
+        <button 
+          className="music-control-btn mute-btn"
+          id="mute-btn"
+          onClick={toggleMute}
+          aria-label={isMuted ? "Unmute music" : "Mute music"}
+        >
+          <span className="music-icon">
+            {isMuted ? '🔇' : '🔊'}
+          </span>
+        </button>
+        
+        <div className="volume-control" id="volume-control">
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.1"
+            value={volume}
+            onChange={handleVolumeChange}
+            className="volume-slider"
+            id="volume-slider"
+            aria-label="Adjust volume"
+          />
+          <div className="volume-level" id="volume-level">
+            {Math.round(volume * 100)}%
+          </div>
+        </div>
+        
+        <div className="music-status" id="music-status">
+          <span className="status-indicator">
+            {isPlaying ? '🎵 Playing' : '🔇 Paused'}
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
