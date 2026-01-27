@@ -20,6 +20,14 @@ function App() {
   
   return (
     <div className="App">
+      
+      {/* 3. ADD HEARTS DISPLAY */}
+      <div style={{
+        padding: "10px", 
+        marginBottom: "20px"
+      }}>
+        <strong>❤️ Hearts: {gameHealth.hearts}</strong> | 
+      </div>
       {/* ADD MUSIC PLAYER HERE - It floats in corner */}
       <MusicPlayer /> {/* <-- ADD THIS LINE */}
       

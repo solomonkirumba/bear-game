@@ -69,14 +69,7 @@ const level6data = {
 
 // Level 7-8: Escape through the cellar, discovery
 const level7data = {
-    answer1: "Go down the dark cellar stairs",
-    answer2: "Barricade the cellar door behind you",
-    answer3: "Go back and try main door again",
-    answer4: "Hide and wait for him to pass",
-    outcome1: "You descend into darkness...",
-    outcome2: "Smart move! You hear him trying the door above.",
-    outcome3: "He's waiting at the top. Game over!",
-    outcome2_alt: "The barricade won't hold forever."
+  
 };
 
 const level8data = {

@@ -132,9 +132,11 @@ function Result({ answerstate, advance, isAnswered, gameHealth}) {
         <h3>{level1data.outcome3}</h3>
         <p>💀 Lost all hearts!</p>
         <button onClick={() => {
-            {props.gameHealth.resetGame()};
+            {gameHealth.resetGame};
+            setScreen(gamemode[0]);
+            console.log("clicked")
           }}>
-            Restart Game
+            Start over
           </button>
       </div>
     );
