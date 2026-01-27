@@ -2,6 +2,7 @@ import { useState } from "react";
 import { level2data, ansresult, questions } from "../data/gamedata";
 
 function Level2({ advance, gameHealth }) {
+  console.log("level 2 rendered")
   const [answerstate, setAnswerState] = useState(ansresult[0]);
   const [selectedButton, setSelectedButton] = useState(null);
   const [buttonColors, setButtonColors] = useState({});

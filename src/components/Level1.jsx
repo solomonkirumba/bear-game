@@ -105,7 +105,7 @@ function Level1({ advance, gameHealth }) {
   );
 }
 
-function Result({ answerstate, advance, isAnswered }) {
+function Result({ answerstate, advance, isAnswered, gameHealth}) {
   // Only show result if an answer has been selected
   if (!isAnswered) return null;
   
@@ -126,11 +126,16 @@ function Result({ answerstate, advance, isAnswered }) {
       </div>
     );
   } else if (answerstate === ansresult[3]) {
+    console.log("reached")
     return (
       <div>
         <h3>{level1data.outcome3}</h3>
         <p>💀 Lost all hearts!</p>
-        {/* Game over will show automatically from App.jsx */}
+        <button onClick={() => {
+            {props.gameHealth.resetGame()};
+          }}>
+            Restart Game
+          </button>
       </div>
     );
   } else {
