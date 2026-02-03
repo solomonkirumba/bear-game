@@ -1,42 +1,968 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* App.css - Bear Game Theme (Fixed Full Screen) */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+  color: #fff;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== FULL SCREEN WELCOME SCREEN ===== */
+#welcome-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 1000;
+  overflow-y: auto; /* Allow scrolling if needed */
+}
+
+/* Remove the extra ::before border that might be cutting off title */
+#welcome-screen::before {
+  display: none; /* Remove the top border that might be causing cutoff */
+}
+
+/* Welcome Header - Fixed positioning */
+#welcome-header {
+  margin-top: 1rem; /* Add space from top */
+  margin-bottom: 2rem;
+  position: relative;
   text-align: center;
+  width: 100%;
+  max-width: 900px;
+  padding: 0 1rem;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+#main-title {
+  font-size: 3.5rem; /* Reduced from 4.5rem */
+  font-weight: 900;
+  background: linear-gradient(to right, #ffb347, #ffcc33, #ffb347);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shine 3s linear infinite;
+  margin: 0.5rem 0; /* Added top margin */
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  line-height: 1.1;
 }
 
-@keyframes logo-spin {
+#welcome-subtitle {
+  color: #a0b3c6;
+  font-size: 1.3rem; /* Reduced from 1.5rem */
+  font-weight: 300;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  margin-top: 0.5rem;
+}
+
+/* Main content container */
+.welcome-content {
+  max-width: 900px;
+  width: 100%;
+  background: rgba(30, 41, 59, 0.85);
+  border-radius: 24px;
+  padding: 2rem 2rem 3rem; /* Adjusted padding: top-right-bottom-left */
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 215, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 1;
+  animation: slideUp 0.8s ease-out;
+  margin: 1rem; /* Added margin */
+  overflow: visible; /* Make sure nothing is clipped */
+}
+
+.welcome-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #ffb347, #ffcc33, #ffb347);
+  border-radius: 24px 24px 0 0;
+  animation: shine 3s linear infinite;
+}
+
+/* Bear Illustration */
+#bear-illustration {
+  width: 180px;
+  height: 180px;
+  margin: 2rem auto 3rem;
+  position: relative;
+}
+
+.bear-ears {
+  position: relative;
+  width: 100%;
+  height: 50px;
+}
+
+.bear-ear {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(145deg, #8b4513, #6b3510);
+  border-radius: 50%;
+  top: 0;
+  animation: ear-twitch 3s ease-in-out infinite;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+.left-ear {
+  left: 25px;
+  transform: rotate(-15deg);
+  animation-delay: 0.5s;
+}
+
+.right-ear {
+  right: 25px;
+  transform: rotate(15deg);
+  animation-delay: 1s;
+}
+
+#bear-face {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(145deg, #a0522d, #8b4513);
+  border-radius: 50%;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 
+    inset 0 6px 15px rgba(0, 0, 0, 0.4),
+    0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 3px solid rgba(0, 0, 0, 0.3);
+}
+
+.bear-eyes {
+  display: flex;
+  gap: 30px;
+  margin-top: -10px;
+}
+
+.bear-eye {
+  width: 28px;
+  height: 28px;
+  background: #fff;
+  border-radius: 50%;
+  position: relative;
+  animation: eye-blink 4s infinite;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.bear-eye::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: #000;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.bear-eye::before {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  top: 25%;
+  left: 25%;
+}
+
+#bear-nose {
+  position: absolute;
+  width: 40px;
+  height: 28px;
+  background: #000;
+  border-radius: 50%;
+  bottom: 35px;
+  animation: nose-wiggle 5s ease-in-out infinite;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  border: 2px solid #222;
+}
+
+/* Welcome Description */
+#game-description {
+  color: #c9d6e3;
+  margin: 1.5rem auto 2.5rem;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  text-align: center;
+  max-width: 700px;
+  padding: 0 1rem;
+}
+
+.description-line {
+  margin: 1rem 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.description-main {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #f1f2f6;
+}
+
+.description-secondary {
+  font-size: 1.2rem;
+  color: #a0b3c6;
+  font-weight: 400;
+}
+
+/* Start Button - FIXED POSITIONING */
+.welcome-start-btn {
+  background: linear-gradient(145deg, #ffb347, #ffcc33);
+  border: none;
+  border-radius: 60px;
+  padding: 1.2rem 3rem;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #1a2a3a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 1.5rem auto;
+  transition: all 0.4s ease;
+  box-shadow: 
+    0 12px 30px rgba(255, 179, 71, 0.4),
+    0 0 0 3px rgba(255, 204, 51, 0.3),
+    inset 0 2px 0 rgba(255, 255, 255, 0.3);
+  min-width: 300px;
+  position: relative;
+  overflow: visible; /* Changed from hidden */
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  z-index: 100; /* Higher z-index to ensure clickability */
+}
+
+.welcome-start-btn:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 
+    0 20px 40px rgba(255, 179, 71, 0.5),
+    0 0 0 3px rgba(255, 204, 51, 0.4),
+    inset 0 2px 0 rgba(255, 255, 255, 0.4);
+  background: linear-gradient(145deg, #ffcc33, #ffb347);
+}
+
+.welcome-start-btn:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+.welcome-start-btn::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -100%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    transparent 20%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 80%
+  );
+  transform: rotate(30deg);
+  transition: transform 0.8s;
+}
+
+.welcome-start-btn:hover::after {
+  transform: rotate(30deg) translateX(100%);
+}
+
+.button-text {
+  letter-spacing: 1.5px;
+  position: relative;
+  z-index: 1;
+  font-weight: 800;
+}
+
+.button-arrow {
+  font-size: 1.8rem;
+  transition: transform 0.3s ease;
+  position: relative;
+  z-index: 1;
+  font-weight: bold;
+}
+
+.welcome-start-btn:hover .button-arrow {
+  transform: translateX(8px);
+}
+
+/* Welcome Footer */
+#game-tip {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  text-align: center;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tip-text {
+  color: #8fa3b8;
+  font-size: 1rem;
+  font-style: italic;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Decorative Icons */
+.decorative-icons {
+  position: fixed; /* Changed from absolute to fixed */
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none; /* This ensures they don't block clicks */
+  z-index: 0;
+}
+
+.floating-icon {
+  position: absolute;
+  font-size: 4rem;
+  opacity: 0.1;
+  z-index: 0;
+  animation: float 8s ease-in-out infinite;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  pointer-events: none; /* Ensure they don't block clicks */
+}
+
+.bear-icon {
+  top: 15%;
+  left: 8%;
+  animation-delay: 0s;
+  font-size: 5rem;
+}
+
+.honey-icon {
+  top: 20%;
+  right: 10%;
+  animation-delay: 2s;
+  font-size: 4rem;
+}
+
+.tree-icon {
+  bottom: 30%;
+  left: 12%;
+  animation-delay: 4s;
+  font-size: 6rem;
+}
+
+/* Forest background effect */
+.forest-background {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 150px;
+  background: 
+    linear-gradient(to top, rgba(15, 32, 39, 0.9), transparent),
+    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><path d="M0,20 Q10,0 20,20 T40,20 T60,20 T80,20 T100,20" fill="%231a2a3a"/></svg>') repeat-x;
+  background-size: 250px 150px;
+  z-index: 0;
+  opacity: 0.6;
+  animation: forestMove 20s linear infinite;
+  pointer-events: none; /* Ensure it doesn't block clicks */
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes shine {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0) rotate(0deg) scale(1); 
+  }
+  33% { 
+    transform: translateY(-30px) rotate(5deg) scale(1.05); 
+  }
+  66% { 
+    transform: translateY(10px) rotate(-5deg) scale(0.95); 
+  }
+}
+
+@keyframes ear-twitch {
+  0%, 100% { transform: rotate(-15deg) scale(1); }
+  25% { transform: rotate(-10deg) scale(1.05); }
+  75% { transform: rotate(-20deg) scale(1.05); }
+}
+
+@keyframes eye-blink {
+  0%, 45%, 55%, 100% { 
+    height: 28px;
+    transform: translateY(0);
+  }
+  50% { 
+    height: 4px;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes nose-wiggle {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.05) rotate(2deg); }
+  75% { transform: scale(1.05) rotate(-2deg); }
+}
+
+@keyframes slideUp {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translateY(30px);
   }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@keyframes forestMove {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 250px 0;
   }
 }
 
-.card {
-  padding: 2em;
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
-.read-the-docs {
-  color: #888;
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 1024px) {
+  #main-title {
+    font-size: 3rem;
+  }
+  
+  #welcome-subtitle {
+    font-size: 1.2rem;
+  }
+  
+  #bear-illustration {
+    width: 160px;
+    height: 160px;
+  }
+  
+  #bear-face {
+    width: 130px;
+    height: 130px;
+  }
+  
+  .bear-eye {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .description-main {
+    font-size: 1.3rem;
+  }
+  
+  .description-secondary {
+    font-size: 1.1rem;
+  }
+  
+  .welcome-start-btn {
+    font-size: 1.3rem;
+    padding: 1.1rem 2.5rem;
+    min-width: 280px;
+  }
+  
+  .floating-icon {
+    font-size: 3.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  #welcome-screen {
+    padding: 0.5rem;
+  }
+  
+  .welcome-content {
+    padding: 1.5rem 1rem 2rem;
+    margin: 0.5rem;
+  }
+  
+  #main-title {
+    font-size: 2.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  #welcome-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  #bear-illustration {
+    width: 140px;
+    height: 140px;
+    margin: 1.5rem auto 2rem;
+  }
+  
+  .bear-ear {
+    width: 50px;
+    height: 50px;
+  }
+  
+  #bear-face {
+    width: 110px;
+    height: 110px;
+  }
+  
+  .bear-eyes {
+    gap: 25px;
+  }
+  
+  .bear-eye {
+    width: 22px;
+    height: 22px;
+  }
+  
+  #bear-nose {
+    width: 35px;
+    height: 25px;
+    bottom: 30px;
+  }
+  
+  .description-main {
+    font-size: 1.2rem;
+  }
+  
+  .description-secondary {
+    font-size: 1rem;
+  }
+  
+  .welcome-start-btn {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    min-width: 260px;
+    gap: 12px;
+  }
+  
+  .floating-icon {
+    font-size: 3rem;
+  }
+  
+  .forest-background {
+    height: 120px;
+    background-size: 200px 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  #main-title {
+    font-size: 2rem;
+  }
+  
+  #welcome-subtitle {
+    font-size: 0.95rem;
+  }
+  
+  #bear-illustration {
+    width: 120px;
+    height: 120px;
+  }
+  
+  #bear-face {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .bear-eyes {
+    gap: 20px;
+  }
+  
+  .bear-eye {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .bear-eye::after {
+    width: 10px;
+    height: 10px;
+  }
+  
+  #bear-nose {
+    width: 30px;
+    height: 20px;
+    bottom: 25px;
+  }
+  
+  .description-main {
+    font-size: 1.1rem;
+  }
+  
+  .description-secondary {
+    font-size: 0.95rem;
+  }
+  
+  .welcome-start-btn {
+    min-width: 240px;
+    padding: 0.9rem 1.8rem;
+    font-size: 1.1rem;
+    gap: 10px;
+  }
+  
+  .button-arrow {
+    font-size: 1.5rem;
+  }
+  
+  .floating-icon {
+    font-size: 2.5rem;
+  }
+  
+  .forest-background {
+    height: 100px;
+    background-size: 150px 100px;
+  }
+}
+
+/* ===== COMMON GAME STYLES (For other components) ===== */
+#root:not(:has(#welcome-screen)) {
+  padding: 2rem 1rem;
+  display: block;
+}
+
+.heart-container {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 2rem auto;
+  padding: 1.2rem;
+  background: rgba(30, 40, 50, 0.9);
+  border-radius: 60px;
+  max-width: 350px;
+  border: 2px solid rgba(255, 204, 51, 0.3);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.heart {
+  font-size: 2.5rem;
+  color: #ff4757;
+  text-shadow: 0 0 15px rgba(255, 71, 87, 0.6);
+  transition: all 0.3s ease;
+  animation: pulse 2s infinite;
+}
+
+.heart.lost {
+  color: #576574;
+  opacity: 0.4;
+  animation: none;
+  filter: grayscale(0.8);
+}
+
+/* Game container for levels (not welcome screen) */
+.game-container:not(#welcome-screen) {
+  background: rgba(18, 32, 40, 0.95);
+  border-radius: 24px;
+  padding: 2rem;
+  margin: 2rem auto;
+  box-shadow: 
+    0 25px 70px rgba(0, 0, 0, 0.6),
+    0 0 0 2px rgba(255, 215, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  max-width: 900px;
+  width: 90%;
+  position: relative;
+  overflow: hidden;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.game-container:not(#welcome-screen)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #ffb347, #ffcc33, #ffb347);
+  border-radius: 24px 24px 0 0;
+  z-index: 1;
+}
+
+.action-button:not(.welcome-start-btn) {
+  background: linear-gradient(145deg, #ffb347, #ffcc33);
+  border: none;
+  border-radius: 50px;
+  padding: 1rem 2.5rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1a2a3a;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 8px 20px rgba(255, 179, 71, 0.3),
+    0 0 0 2px rgba(255, 204, 51, 0.2);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 1rem auto;
+  display: block;
+}
+
+.action-button:not(.welcome-start-btn):hover {
+  transform: translateY(-3px);
+  box-shadow: 
+    0 12px 25px rgba(255, 179, 71, 0.4),
+    0 0 0 2px rgba(255, 204, 51, 0.3);
+  background: linear-gradient(145deg, #ffcc33, #ffb347);
+}
+
+/* Music Player */
+.music-player {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: rgba(30, 40, 50, 0.9);
+  border-radius: 50px;
+  padding: 10px 20px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  border: 1px solid rgba(255, 204, 51, 0.3);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.music-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.music-btn:hover {
+  background: rgba(255, 204, 51, 0.2);
+  transform: scale(1.1);
+}
+
+.music-status {
+  color: #a0b3c6;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Remove default styles */
+.logo, .card, .read-the-docs {
+  display: none;
+}
+/* ===== LEVEL 1 SPECIFIC STYLES ===== */
+#level1-screen {
+  position: relative;
+}
+
+.level-indicator {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 204, 51, 0.2);
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  color: #ffcc33;
+  border: 1px solid rgba(255, 204, 51, 0.3);
+  backdrop-filter: blur(5px);
+  z-index: 2;
+}
+
+.question-container {
+  background: rgba(30, 40, 50, 0.7);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2.5rem;
+  border: 2px solid rgba(255, 204, 51, 0.2);
+}
+
+.question-text {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #f1f2f6;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+
+.question-hint {
+  color: #a0b3c6;
+  font-size: 1rem;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+/* Answer Grid */
+.answer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 2.5rem;
+}
+
+.answer-button {
+  background: linear-gradient(145deg, #2a3b4d, #1e2a38);
+  border: none;
+  border-radius: 16px;
+  padding: 1.5rem 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #f1f2f6;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 16px rgba(0, 0, 0, 0.2),
+    0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.answer-button:hover:not(:disabled) {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 12px 24px rgba(0, 0, 0, 0.3),
+    0 6px 12px rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 204, 51, 0.3);
+  background: linear-gradient(145deg, #3a4b5d, #2e3a48);
+}
+
+.answer-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Answer button color states */
+.answer-button.correct {
+  background: linear-gradient(145deg, #2ecc71, #27ae60);
+  border-color: #2ecc71;
+  color: white;
+  animation: pulse 2s infinite;
+}
+
+.answer-button.wrong {
+  background: linear-gradient(145deg, #e74c3c, #c0392b);
+  border-color: #e74c3c;
+  color: white;
+}
+
+.answer-button.close-call {
+  background: linear-gradient(145deg, #f39c12, #e67e22);
+  border-color: #f39c12;
+  color: white;
+}
+
+/* Result Container */
+.result-container {
+  background: rgba(30, 40, 50, 0.9);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-top: 2rem;
+  border: 2px solid rgba(255, 204, 51, 0.3);
+  animation: slideUp 0.5s ease;
+}
+
+.result-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffcc33;
+  margin-bottom: 1rem;
+}
+
+.result-text {
+  color: #f1f2f6;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.heart-loss-warning {
+  color: #f39c12;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+/* Game Over specific */
+.game-over {
+  background: rgba(231, 76, 60, 0.1);
+  border-color: rgba(231, 76, 60, 0.3);
+}
+
+.game-over .result-title {
+  color: #e74c3c;
+}
+
+/* Responsive for answer grid */
+@media (max-width: 768px) {
+  .answer-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .answer-button {
+    min-height: 70px;
+    padding: 1.2rem 0.5rem;
+    font-size: 1.1rem;
+  }
+  
+  .question-text {
+    font-size: 1.5rem;
+  }
+  
+  .level-indicator {
+    position: relative;
+    top: auto;
+    right: auto;
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
 }

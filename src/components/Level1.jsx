@@ -1,77 +1,158 @@
-// Level1
-import { level1data,questions,ansresult } from "../data/gamedata";
+// Level1.jsx
+import { level1data, questions, ansresult } from "../data/gamedata";
 import { useState } from "react";
+
 function Level1({ advance, gameHealth }) {
   const [answerstate, setAnswerState] = useState(ansresult[0]);
+  const [selectedButton, setSelectedButton] = useState(null);
+  const [buttonColors, setButtonColors] = useState({});
+  const [isAnswered, setIsAnswered] = useState(false);
   
-  const handleAnswerClick = (result) => {
-    setAnswerState(result);
+  const handleAnswerClick = (result, buttonId) => {
+    if (isAnswered) return;
     
-    // Apply heart effects HERE
+    setIsAnswered(true);
+    setAnswerState(result);
+    setSelectedButton(buttonId);
+    
+    const newColors = {};
+    
+    // Set CSS class names instead of inline colors
+    if (result === ansresult[1]) { // Correct
+      newColors[buttonId] = "correct";
+    } 
+    else if (result === ansresult[2]) { // Close call
+      newColors[buttonId] = "close-call";
+    }
+    else if (result === ansresult[3]) { // Wrong
+      newColors[buttonId] = "wrong";
+    }
+    
+    setButtonColors(newColors);
+    
     if (result === ansresult[1]) {
       // Correct - do nothing
     } 
     else if (result === ansresult[2]) {
-      // Close call - lose 1 heart
       gameHealth.loseOneHeart();
     }
     else if (result === ansresult[3]) {
-      // Wrong - lose all hearts
       gameHealth.loseAllHearts();
     }
   };
 
+  // Helper function to get button style
+  const getButtonStyle = (buttonId) => {
+    const baseStyle = {
+      cursor: isAnswered ? "not-allowed" : "pointer",
+      opacity: isAnswered ? 0.7 : 1
+    };
+    return baseStyle;
+  };
+
   return (
-    <div>
-      <h2>{questions.level1}</h2>
-      {/*Ive added those tags so you guys understand the logic better,
-      close calls mean they lose a heart wrong answers mean they lose all the hearts 
-      while correct ones allow procedure*/}
-      <button onClick={() => handleAnswerClick(ansresult[3])}>
-        {level1data.answer1} (Wrong)
-      </button>
-      <button onClick={() => handleAnswerClick(ansresult[1])}>
-        {level1data.answer2} (Correct)
-      </button>
-      <button onClick={() => handleAnswerClick(ansresult[3])}>
-        {level1data.answer3} (Wrong)
-      </button>
-      <button onClick={() => handleAnswerClick(ansresult[2])}>
-        {level1data.answer4} (Close Call)
-      </button>
+    <div className="game-container" id="level1-screen">
+      <div className="level-indicator" id="level1-indicator">Level 1</div>
       
-      <Result answerstate={answerstate} advance={advance} />
+      <div className="question-container" id="level1-question">
+        <h2 className="question-text" id="level1-question-text">{questions.level1}</h2>
+        <p className="question-hint" id="level1-hint">Choose wisely! Your survival depends on it.</p>
+      </div>
+      
+      <div className="answer-grid" id="level1-answers">
+        <button 
+          onClick={() => handleAnswerClick(ansresult[3], "button1")}
+          className={`answer-button ${buttonColors["button1"] || ""}`}
+          style={getButtonStyle("button1")}
+          disabled={isAnswered}
+          id="level1-option1"
+        >
+          {level1data.answer1}
+        </button>
+        
+        <button 
+          onClick={() => handleAnswerClick(ansresult[1], "button2")}
+          className={`answer-button ${buttonColors["button2"] || ""}`}
+          style={getButtonStyle("button2")}
+          disabled={isAnswered}
+          id="level1-option2"
+        >
+          {level1data.answer2}
+        </button>
+        
+        <button 
+          onClick={() => handleAnswerClick(ansresult[3], "button3")}
+          className={`answer-button ${buttonColors["button3"] || ""}`}
+          style={getButtonStyle("button3")}
+          disabled={isAnswered}
+          id="level1-option3"
+        >
+          {level1data.answer3}
+        </button>
+        
+        <button 
+          onClick={() => handleAnswerClick(ansresult[2], "button4")}
+          className={`answer-button ${buttonColors["button4"] || ""}`}
+          style={getButtonStyle("button4")}
+          disabled={isAnswered}
+          id="level1-option4"
+        >
+          {level1data.answer4}
+        </button>
+      </div>
+      
+      <Result 
+        answerstate={answerstate} 
+        advance={advance} 
+        isAnswered={isAnswered} 
+        gameHealth={gameHealth}
+      />
     </div>
   );
 }
 
-function Result({ answerstate, advance }) {
-  // NO heart functions here!
+function Result({ answerstate, advance, isAnswered, gameHealth }) {
+  if (!isAnswered) return null;
+  
   if (answerstate === ansresult[1]) {
     return (
-      <div>
-        <h3>{level1data.outcome1}</h3>
-        <button onClick={advance}>Proceed to Level 2</button>
+      <div className="result-container" id="level1-result-correct">
+        <h3 className="result-title">Good Choice! 🎉</h3>
+        <p className="result-text">{level1data.outcome1}</p>
+        <button className="action-button" onClick={advance} id="level1-proceed-btn">
+          Proceed to Level 2
+        </button>
       </div>
     );
   } else if (answerstate === ansresult[2]) {
     return (
-      <div>
-        <h3>{level1data.outcome2}</h3>
-        <p>⚠️ Lost 1 heart!</p>
-        <button onClick={advance}>Proceed to Level 2</button>
+      <div className="result-container" id="level1-result-close">
+        <h3 className="result-title">Close Call! ⚠️</h3>
+        <p className="result-text">{level1data.outcome2}</p>
+        <p className="heart-loss-warning">Lost 1 heart!</p>
+        <button className="action-button" onClick={advance} id="level1-continue-btn">
+          Continue to Level 2
+        </button>
       </div>
     );
   } else if (answerstate === ansresult[3]) {
     return (
-      <div>
-        <h3>{level1data.outcome3}</h3>
-        <p>💀 Lost all hearts!</p>
-        {/* Game over will show automatically from App.jsx */}
+      <div className="result-container game-over" id="level1-result-wrong">
+        <h3 className="result-title">Game Over! 💀</h3>
+        <p className="result-text">{level1data.outcome3}</p>
+        <p className="heart-loss-warning">Lost all hearts!</p>
+        <button 
+          className="action-button" 
+          onClick={() => window.location.reload()}
+          id="level1-restart-btn"
+        >
+          Start Over
+        </button>
       </div>
     );
   } else {
     return null;
   }
 }
+
 export default Level1;
