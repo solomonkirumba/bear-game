@@ -1,11 +1,9 @@
+<<<<<<< HEAD
 # Bear Game - React Project
 
 ## Project Overview
-Interactive quiz game about bears built with React for final module project. Test bear knowledge across levels with health system.
-
-**Course:** React Application & Defense  
+Interactive  game about bears built with React for final module project. Test bear knowledge across levels with health system. 
 **Group:** Solomon, Brian, Maggy, Abdala  
-**Live Demo:** [Add Vercel/Netlify link]
 
 ## Submission Deliverables
 
@@ -88,19 +86,36 @@ function useGameHealth() {
 ```
 
 ## Component Tree
-```
-App
-├── Welcome
-├── Level1
-│   ├── Question
-│   ├── Buttons (4 answers)
-│   └── Result
-├── Level2
-│   ├── Question
-│   ├── Buttons (4 answers)
-│   └── Result
-└── GameOver/WinScreens
-```
+App.jsx (Root)
+├── Conditional Rendering based on game state
+│   ├── Welcome.jsx (Initial screen)
+│   ├── Level1.jsx → Level10.jsx (Game levels)
+│   │   ├── Question display
+│   │   ├── Answer buttons (4 options)
+│   │   └── Result display component
+│   └── Gameover.jsx (Game over screen)
+├── MusicPlayer.jsx (Audio controls)
+└── useGameHealth.jsx (Custom hook - global state)
+    ├── hearts state
+    ├── score state
+    ├── loseOneHeart() function
+    ├── loseAllHearts() function
+    ├── addPoints() function
+    └── resetGame() function
+
+## data flow
+
+Game Data (gamedata.js)
+    ↓
+App.jsx (Manages current level)
+    ↓
+Level Components (Level1.jsx - Level10.jsx)
+    ↓ (Props)
+Answer Selection → useGameHealth Hook
+    ↓
+State Update → App.jsx re-render
+    ↓
+Conditional Screen Change
 
 ## Game Logic
 | Answer Type | Hearts Lost |Outcome |
@@ -109,14 +124,6 @@ App
 | Close Call | 1 | Advance | 
 | Wrong | All (3) | 0 | Game Over |
 
-## Requirements Met
-- ✅ Custom Hook (useGameHealth)
-- ✅ Advanced State Management
-- ✅ Component Architecture
-- ✅ Git Collaboration
-- ✅ Interactive UI
-- 🔄 React Router (In Progress)
-- 🔄 Testing (In Progress)
 
 ## Team Roles
 - **Solomon**: UI/UX, component design,
