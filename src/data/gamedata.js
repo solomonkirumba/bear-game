@@ -69,6 +69,14 @@ const level6data = {
 
 // Level 7-8: Escape through the cellar, discovery
 const level7data = {
+    answer1: "Sneak to the front door",
+    answer2: "Search for basement/cellar door",
+    answer3: "Take a kitchen knife as weapon",
+    answer4: "Check the windows for escape",
+    outcome1: "The door creaks loudly! He wakes up. Game over!",
+    outcome2: "You find a locked cellar door. The key fits!",
+    outcome3: "The knife slips and clatters. Game over!",
+    outcome2_alt: "The cellar might have another way out."
   
 };
 
