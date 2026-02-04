@@ -28,6 +28,7 @@ This is the only custom hook in the project. It tracks player health across the 
 - `loseOneHeart()`: Used for "close call" answers
 - `loseAllHearts()`: Used for fatal mistakes
 - `resetGame()`: Clears health state for a new game
+![Component Tree Diagram](./component-tree.png)
 
 ## 5. Project Structure
 - `src/components/`: All UI screens and gameplay level files
